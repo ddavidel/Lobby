@@ -1,0 +1,72 @@
+#        IMPORTANT READ PLEASE
+#
+#
+#   Permissions:
+# To use the ADMIN commands you will need permission. Here i listed all the permissions you will need to have ADMIN access to this Skript:
+#
+#    Command:                     Permission:
+#
+#   /setspawn              ----> lobby.setspawn
+#   /toggleTeleportOnJoin  ----> lobby.toggleTeleport
+
+
+
+on load:
+	send "§3Lobby.sk §fhas been loaded" to console
+on unload:
+	send "§3Lobby.sk §fhas been disabled" to console
+
+
+on join:
+	if {teleportOnJoin} is "True":
+		teleport player to {spawn.location}
+
+
+
+#    NORMAL COMMANDS BEGIN HERE
+
+command /spawn:
+	Description: Teleport you to the spawn
+	Usage: /spawn
+	Executable by: players
+	Trigger:
+		if {spawn.location} is not set:
+			send "§cThe spawn is not set. If you think this is an error contact the server admin. If you are the admin and this message keep showing contact me at this link §7https://www.spigotmc.org/members/davidel.903566/" to player
+		else:
+			send "§7Teleporting to spawn..."
+			wait 2 seconds
+			teleport player to {spawn.location}
+			send "§7Teleported to spawn."
+
+
+
+#    ADMIN-ONLY COMMAND BEGIN HERE 
+
+command /setspawn:
+	Description: Set the world's spawn
+	Usage: /setspawn
+	Executable by: players
+	Permission: lobby.setspawn
+	permission message: &cYou don't have permission.
+	Trigger:
+		set {spawn.location} to player's location
+		send "§7Wolrd spawn has been updated!" to player
+
+
+command /toggleTeleportOnJoin:
+	Description: Choose if teleport to spawn a player when he join.
+	Usage: /toggleTeleportOnJoin
+	Executable by: players
+	Permission: lobby.toggleTeleport
+	Permission message: &cYou don't have permission.
+	Trigger:
+		if {teleportOnJoin} is not set:
+			set {teleportOnJoin} to "True"
+			send "§7Teleport on join is now §aTrue" to player
+		else:
+			if {teleportOnJoin} is "True":
+				set {teleportOnJoin} to "False"
+				send "§7Teleport on join is now §cFalse" to player
+			else:
+				set {teleportOnJoin} to "True"
+				send "§7Teleport on join is now §aTrue" to player
